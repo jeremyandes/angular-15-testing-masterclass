@@ -15,6 +15,7 @@ describe('CoursesCardListComponent', () => {
     let coursesService: any;
 
     const begginerCourses = setupCourses().filter((course) => course.category === 'BEGINNER');
+    const advancedCourses = setupCourses().filter((course) => course.category === 'ADVANCED');
 
     beforeEach(waitForAsync(() => {
         const coursesServiceSpy = jasmine.createSpyObj('CoursesService', ['findAllCourses']);
@@ -51,11 +52,21 @@ describe('CoursesCardListComponent', () => {
     });
 
     it('should display only advanced courses', () => {
-        pending();
+        coursesService.findAllCourses.and.returnValue(of(advancedCourses));
+        fixture.detectChanges();
+
+        const tabs = debugElement.queryAll(By.css('.mdc-tab'));
+
+        expect(tabs.length).toBe(1, 'Unexpected number of tabs found');
     });
 
     it('should display both tabs', () => {
-        pending();
+        coursesService.findAllCourses.and.returnValue(of(setupCourses()));
+        fixture.detectChanges();
+
+        const tabs = debugElement.queryAll(By.css('.mdc-tab'));
+
+        expect(tabs.length).toBe(2, 'Unexpected number of tabs found');
     });
 
     it('should display advanced courses when tab clicked', () => {
