@@ -4,6 +4,7 @@ import { CoursesCardListComponent } from './courses-card-list.component';
 import { setupCourses } from '../common/setup-test-data';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+
 describe('CoursesCardListComponent', () => {
     let component: CoursesCardListComponent;
     let fixture: ComponentFixture<CoursesCardListComponent>;
@@ -27,10 +28,7 @@ describe('CoursesCardListComponent', () => {
 
     it('should display the course list', () => {
         component.courses = setupCourses();
-
         fixture.detectChanges();
-
-        console.log(debugElement.nativeElement.outerHTML);
 
         const cards = debugElement.queryAll(By.css('.course-card'));
 
@@ -39,6 +37,19 @@ describe('CoursesCardListComponent', () => {
     });
 
     it('should create the first course', () => {
-        pending();
+        component.courses = setupCourses();
+        fixture.detectChanges();
+
+        const course = component.courses[0];
+        const card = debugElement.query(By.css('.course-card:first-child'));
+        const title = card.query(By.css('mat-card-title'));
+        const image = card.query(By.css('img'));
+
+        expect(course).toBeTruthy();
+        expect(card).toBeTruthy();
+        expect((title.nativeElement as HTMLElement).textContent).toBe(course.titles.description);
+        expect((image.nativeElement as HTMLImageElement).src).toBe(course.iconUrl);
+
+
     });
 });
