@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CoursesModule } from '../courses.module';
 import { CoursesCardListComponent } from './courses-card-list.component';
-import { COURSES } from '../../../../server/db-data';
 import { setupCourses } from '../common/setup-test-data';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -28,7 +27,13 @@ describe('CoursesCardListComponent', () => {
 
     it('should display the course list', () => {
         component.courses = setupCourses();
+
+        fixture.detectChanges();
+
+        console.log(debugElement.nativeElement.outerHTML);
+
         const cards = debugElement.queryAll(By.css('.course-card'));
+
         expect(cards).toBeTruthy('Could not find cards');
         expect(cards.length).toBe(12, 'Unexpected number of courses');
     });
