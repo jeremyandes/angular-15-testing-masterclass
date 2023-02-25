@@ -4,11 +4,17 @@ import { HomeComponent } from './home.component';
 import { CoursesModule } from '../courses.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CoursesService } from '../services/courses.service';
+import { setupCourses } from '../common/setup-test-data';
+import { By } from '@angular/platform-browser';
+import { of } from 'rxjs';
 
 describe('CoursesCardListComponent', () => {
     let component: HomeComponent;
     let fixture: ComponentFixture<HomeComponent>;
     let debugElement: DebugElement;
+    let coursesService: any;
+
+    const begginerCourses = setupCourses().filter((course) => course.category === 'BEGINNER');
 
     beforeEach(waitForAsync(() => {
         const coursesServiceSpy = jasmine.createSpyObj('CoursesService', ['findAllCourses']);
@@ -27,6 +33,7 @@ describe('CoursesCardListComponent', () => {
                 fixture = TestBed.createComponent(HomeComponent);
                 component = fixture.componentInstance;
                 debugElement = fixture.debugElement;
+                coursesService = TestBed.inject<CoursesService>(CoursesService);
             });
     }));
 
@@ -35,7 +42,12 @@ describe('CoursesCardListComponent', () => {
     });
 
     it('should display only beginner courses', () => {
-        pending();
+        coursesService.findAllCourses.and.returnValue(of(begginerCourses));
+        fixture.detectChanges();
+
+        const tabs = debugElement.queryAll(By.css('.mdc-tab'));
+
+        expect(tabs.length).toBe(1, 'Unexpected number of tabs found');
     });
 
     it('should display only advanced courses', () => {
