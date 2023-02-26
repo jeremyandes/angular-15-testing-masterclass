@@ -1,5 +1,5 @@
 import { DebugElement } from '@angular/core';
-import { ComponentFixture, waitForAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, waitForAsync, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { HomeComponent } from './home.component';
 import { CoursesModule } from '../courses.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -70,7 +70,7 @@ describe('CoursesCardListComponent', () => {
         expect(tabs.length).toBe(2, 'Unexpected number of tabs found');
     });
 
-    xit('should display advanced courses when tab clicked', (done: DoneFn) => {
+    it('should display advanced courses when tab clicked', fakeAsync(() => {
         coursesService.findAllCourses.and.returnValue(of(setupCourses()));
         fixture.detectChanges();
 
@@ -78,17 +78,16 @@ describe('CoursesCardListComponent', () => {
 
         click(tabs[1]);
         fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
 
-        setTimeout(() => {
-            const titles = debugElement.queryAll(By.css('.mat-mdc-card-title'));
+        const titles = debugElement.queryAll(By.css('.mat-mdc-card-title'));
+        console.log(titles.map((title) => (title.nativeElement as HTMLElement).textContent));
 
-            expect(titles).toBeTruthy();
-            expect(titles.length).toBeGreaterThan(0, 'Could not find card titles');
-            expect((titles[0].nativeElement as HTMLElement).textContent).toContain(
-                'Angular Security Course',
-            );
-
-            done();
-        }, 500);
-    });
+        expect(titles).toBeTruthy();
+        expect(titles.length).toBeGreaterThan(0, 'Could not find card titles');
+        expect((titles[0].nativeElement as HTMLElement).textContent).toContain(
+            'Angular Security Course',
+        );
+    }));
 });
