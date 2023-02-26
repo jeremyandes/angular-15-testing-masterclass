@@ -9,7 +9,7 @@ import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { click } from '../common/test-utils';
 
-describe('CoursesCardListComponent', () => {
+fdescribe('CoursesCardListComponent', () => {
     let component: HomeComponent;
     let fixture: ComponentFixture<HomeComponent>;
     let debugElement: DebugElement;
@@ -70,7 +70,7 @@ describe('CoursesCardListComponent', () => {
         expect(tabs.length).toBe(2, 'Unexpected number of tabs found');
     });
 
-    it('should display advanced courses when tab clicked', fakeAsync(() => {
+    it('should display advanced courses when tab clicked - fakeAsync', fakeAsync(() => {
         coursesService.findAllCourses.and.returnValue(of(setupCourses()));
         fixture.detectChanges();
 
@@ -82,12 +82,32 @@ describe('CoursesCardListComponent', () => {
         fixture.detectChanges();
 
         const titles = debugElement.queryAll(By.css('.mat-mdc-card-title'));
-        console.log(titles.map((title) => (title.nativeElement as HTMLElement).textContent));
 
         expect(titles).toBeTruthy();
         expect(titles.length).toBeGreaterThan(0, 'Could not find card titles');
         expect((titles[0].nativeElement as HTMLElement).textContent).toContain(
             'Angular Security Course',
         );
+    }));
+
+    fit('should display advanced courses when tab clicked - @deprecated async', waitForAsync(() => {
+        coursesService.findAllCourses.and.returnValue(of(setupCourses()));
+        fixture.detectChanges();
+
+        const tabs = debugElement.queryAll(By.css('.mdc-tab'));
+
+        click(tabs[1]);
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            console.log('called whenStable()');
+
+            const titles = debugElement.queryAll(By.css('.mat-mdc-card-title'));
+
+            expect(titles).toBeTruthy();
+            expect(titles.length).toBeGreaterThan(0, 'Could not find card titles');
+            expect((titles[0].nativeElement as HTMLElement).textContent).toContain(
+                'Angular Security Course',
+            );
+        });
     }));
 });
