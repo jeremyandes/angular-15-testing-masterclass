@@ -49,7 +49,5 @@ describe('CoursesCardListComponent', () => {
         expect(card).toBeTruthy();
         expect((title.nativeElement as HTMLElement).textContent).toBe(course.titles.description);
         expect((image.nativeElement as HTMLImageElement).src).toBe(course.iconUrl);
-
-
     });
 });

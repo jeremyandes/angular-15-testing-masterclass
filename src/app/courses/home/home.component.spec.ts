@@ -9,7 +9,7 @@ import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { click } from '../common/test-utils';
 
-fdescribe('CoursesCardListComponent', () => {
+describe('CoursesCardListComponent', () => {
     let component: HomeComponent;
     let fixture: ComponentFixture<HomeComponent>;
     let debugElement: DebugElement;
@@ -90,24 +90,24 @@ fdescribe('CoursesCardListComponent', () => {
         );
     }));
 
-    fit('should display advanced courses when tab clicked - @deprecated async', waitForAsync(() => {
-        coursesService.findAllCourses.and.returnValue(of(setupCourses()));
-        fixture.detectChanges();
+    // it('should display advanced courses when tab clicked - @deprecated async', waitForAsync(() => {
+    //     coursesService.findAllCourses.and.returnValue(of(setupCourses()));
+    //     fixture.detectChanges();
 
-        const tabs = debugElement.queryAll(By.css('.mdc-tab'));
+    //     const tabs = debugElement.queryAll(By.css('.mdc-tab'));
 
-        click(tabs[1]);
-        fixture.detectChanges();
-        fixture.whenStable().then(() => {
-            console.log('called whenStable()');
+    //     click(tabs[1]);
+    //     fixture.detectChanges();
+    //     fixture.whenStable().then(() => {
+    //         console.log('called whenStable()');
 
-            const titles = debugElement.queryAll(By.css('.mat-mdc-card-title'));
+    //         const titles = debugElement.queryAll(By.css('.mat-mdc-card-title'));
 
-            expect(titles).toBeTruthy();
-            expect(titles.length).toBeGreaterThan(0, 'Could not find card titles');
-            expect((titles[0].nativeElement as HTMLElement).textContent).toContain(
-                'Angular Security Course',
-            );
-        });
-    }));
+    //         expect(titles).toBeTruthy();
+    //         expect(titles.length).toBeGreaterThan(0, 'Could not find card titles');
+    //         expect((titles[0].nativeElement as HTMLElement).textContent).toContain(
+    //             'Angular Security Course',
+    //         );
+    //     });
+    // }));
 });
